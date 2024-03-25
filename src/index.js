@@ -4,6 +4,7 @@ import { readJsonFile, appendResultStr, reportFailures, reportLowCoverage } from
 const coverage_pct = 100;
 
 try {
+  shell.exec('npm i')
   shell.exec(`npm run test:results`);
   const results = await readJsonFile('./test-results.json');
   const coverage = await readJsonFile('./coverage-summary.json');
