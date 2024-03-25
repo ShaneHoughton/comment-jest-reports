@@ -1,0 +1,7 @@
+node_modules
+.env
+
+# output files
+coverage-summary.json
+rest-results.json
+output.txt

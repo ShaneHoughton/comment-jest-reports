@@ -1,0 +1,10 @@
+name: houghtons comment jest results
+description: comments on PR with jest results and coverage
+inputs:
+  tests:
+    description: 'path to the test files'
+    required: true
+    default: './'
+runs: 
+  using: node16
+  main: src/index.js
