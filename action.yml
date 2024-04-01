@@ -21,5 +21,8 @@ steps:
   - name: Install dependencies
     run: npm install
 
+  - name: Run test script
+    run: npm run test:results
+
   - name: Run JavaScript file
     run: node ./src/index.js

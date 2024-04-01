@@ -1,4 +1,3 @@
-const shell = require('shelljs');
 const {
   readJsonFile,
   appendResultStr,
@@ -10,8 +9,6 @@ const coverage_pct = 100;
 
 const createSummary = async () => {
   try {
-    shell.exec('npm i');
-    shell.exec(`npm run test:results`);
     const results = await readJsonFile('./test-results.json');
     const coverage = await readJsonFile('./coverage-summary.json');
 
