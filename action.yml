@@ -5,17 +5,21 @@ inputs:
     description: 'path to the test files'
     required: true
     default: './'
-runs: 
-  using: node16
-  main: src/index.js
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+runs:
+  using: 'node16'
+  main: 'index.js'
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Install dependencies
-      run: npm install
+permissions:
+  contents: read
+  packages: write
+
+steps:
+  - name: Checkout code
+    uses: actions/checkout@v2
+
+  - name: Install dependencies
+    run: npm install
+
+  - name: Run JavaScript file
+    run: node ./src/index.js
