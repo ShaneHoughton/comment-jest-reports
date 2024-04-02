@@ -13,7 +13,7 @@ const createSummary = async () => {
   try {
     try {
       await exec(
-        'npm run test -- --coverage --json --outputFile=./test-results.json --coverageReporters=json-summary --coverageDirectory=./',
+        'npm run test -- --coverage --json --outputFile=./test-results.json --collectCoverageFrom=src/**/*.js --coverageReporters=json-summary --coverageDirectory=./',
       );
     } catch (error) {
       console.log(error);
