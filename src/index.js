@@ -1,4 +1,5 @@
-const shell = require('shelljs');
+const util = require('node:util');
+const exec = util.promisify(require('node:child_process').exec);
 const {
   readJsonFile,
   appendResultStr,
@@ -10,7 +11,11 @@ const coverage_pct = 100;
 
 const createSummary = async () => {
   try {
-    shell.exec('npm run test -- --json --outputFile=./test-results.json');
+    try {
+      await exec('npm run test -- --json --outputFile=./test-results.json');
+    } catch (error) {
+      console.log(error);
+    }
     const results = await readJsonFile('./test-results.json');
     const coverage = await readJsonFile('./coverage-summary.json');
 
