@@ -7,7 +7,9 @@ exports.readJsonFile = async (filename) => {
 };
 
 exports.appendResultStr = async (data, newline = true) => {
-  let dataToAppend = data;
+  // eslint-disable-next-line no-control-regex
+  const cleanedData = data.replace(/\x1B\[[0-9;]*[JKmsu]/g, '');
+  let dataToAppend = cleanedData;
   if (newline) dataToAppend += '\n';
   fs.appendFileSync('output.txt', dataToAppend, (err) => {
     if (err) {
