@@ -21,6 +21,9 @@ steps:
   - name: Install dependencies
     run: npm install
 
+  - name: Install shelljs
+    run: npm install shelljs
+
   - name: Run test script
     run: npm run test:results
 
