@@ -3,5 +3,5 @@ node_modules
 
 # output files
 coverage-summary.json
-rest-results.json
+test-results.json
 output.txt
