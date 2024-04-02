@@ -5,6 +5,14 @@ inputs:
     description: 'path to the covered files'
     required: true
     default: './src'
+  coveragepct:
+    description: 'required coverage percent for code'
+    required: true
+    default: 100
+  outputfile:
+    description: 'name of the output txt file with report'
+    required: false
+    default: 'output.txt'
 
 runs:
   using: 'node16'

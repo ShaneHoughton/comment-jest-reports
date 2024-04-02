@@ -1,6 +1,8 @@
 const { readFile } = require('fs/promises');
 const fs = require('fs');
 
+const outputFile = process.env.INPUT_OUTPUTFILE;
+
 exports.readJsonFile = async (filename) => {
   const file = await readFile(filename, 'utf-8');
   return JSON.parse(file);
@@ -13,7 +15,7 @@ exports.appendResultStr = async (data, newline = true) => {
     .replace(/\s(>)\s*/g, '   ');
   let dataToAppend = cleanedData;
   if (newline) dataToAppend += '\n';
-  fs.appendFileSync('output.txt', dataToAppend, (err) => {
+  fs.appendFileSync(outputFile ?? 'output.txt', dataToAppend, (err) => {
     if (err) {
       console.error('Error appending to file:', err);
       return;

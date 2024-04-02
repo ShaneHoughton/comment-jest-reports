@@ -8,8 +8,7 @@ const {
 } = require('./helpers');
 
 const coverageDir = process.env.INPUT_COVERAGEDIR;
-
-const coverage_pct = 100;
+const coverage_pct = process.env.INPUT_COVERAGEPCT;
 
 const createSummary = async () => {
   try {
