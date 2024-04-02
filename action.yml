@@ -1,10 +1,6 @@
 name: houghtons comment jest results
 description: comments on PR with jest results and coverage
 inputs:
-  testdir:
-    description: 'path to the test files'
-    required: true
-    default: './'
   coveragedir:
     description: 'path to the covered files'
     required: true
