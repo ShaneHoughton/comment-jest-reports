@@ -53,7 +53,10 @@ const createSummary = async () => {
       reportLowCoverage(fnCoverages);
     }
   } catch (error) {
-    console.error(error);
+    appendResultStr(
+      '============================= An issue was encountered! =================================',
+    );
+    appendResultStr(error);
   }
 };
 
