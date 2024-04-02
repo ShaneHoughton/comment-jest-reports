@@ -56,6 +56,11 @@ const createSummary = async () => {
     appendResultStr(
       '============================= An issue was encountered! =================================',
     );
+
+    if (error.errno === -2) {
+      appendResultStr(`Could not find any tests!`);
+    }
+
     appendResultStr(JSON.stringify(error));
   }
 };
