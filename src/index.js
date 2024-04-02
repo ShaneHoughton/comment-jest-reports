@@ -22,9 +22,13 @@ const createSummary = async () => {
     const coverage = await readJsonFile('./coverage-summary.json');
 
     if (results.numFailedTests === 0 && results.numFailedTestSuites === 0) {
-      appendResultStr('================ All tests passed! ==================');
+      appendResultStr(
+        '=============================== All tests passed! =======================================',
+      );
     } else {
-      appendResultStr('============== Not all tests passed! ================');
+      appendResultStr(
+        '=============================== Not all tests passed! ===================================',
+      );
       appendResultStr(
         `* Only ${results.numPassedTests}/${results.numTotalTests} tests passed.`,
       );
@@ -39,17 +43,13 @@ const createSummary = async () => {
       functions.pct < coverage_pct ||
       branches.pct < coverage_pct
     ) {
-      appendResultStr('============== Isufficient coverage! ===============');
+      appendResultStr(
+        '============================== Insufficient Coverage! ===================================',
+      );
       appendResultStr(`* Total coverage must meet at least ${coverage_pct}%`);
       appendResultStr(JSON.stringify(total, null, 2));
       reportLowCoverage(fnCoverages);
     }
-
-    // try {
-    //   await exec('npm run test -- --json --outputFile=./test-results.json');
-    // } catch (error) {
-    //   console.log(error);
-    // }
   } catch (error) {
     console.error(error);
   }
