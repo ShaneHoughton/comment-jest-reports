@@ -12,7 +12,9 @@ const coverage_pct = 100;
 const createSummary = async () => {
   try {
     try {
-      await exec('npm run test -- --json --outputFile=./test-results.json');
+      await exec(
+        'npm run test -- --coverage --json --outputFile=./test-results.json',
+      );
     } catch (error) {
       console.log(error);
     }
@@ -42,6 +44,12 @@ const createSummary = async () => {
       appendResultStr(JSON.stringify(total, null, 2));
       reportLowCoverage(fnCoverages);
     }
+
+    // try {
+    //   await exec('npm run test -- --json --outputFile=./test-results.json');
+    // } catch (error) {
+    //   console.log(error);
+    // }
   } catch (error) {
     console.error(error);
   }
