@@ -1,10 +1,14 @@
 name: houghtons comment jest results
 description: comments on PR with jest results and coverage
 inputs:
-  tests:
+  testdir:
     description: 'path to the test files'
     required: true
     default: './'
+  coveragedir:
+    description: 'path to the covered files'
+    required: true
+    default: './src'
 
 runs:
   using: 'node16'
@@ -17,15 +21,6 @@ permissions:
 steps:
   - name: Checkout code
     uses: actions/checkout@v2
-
-  - name: Install dependencies
-    run: npm install
-
-  - name: Install shelljs
-    run: npm install shelljs
-
-  - name: Run test script
-    run: npm run test:results
 
   - name: Run JavaScript file
     run: node ./src/index.js
