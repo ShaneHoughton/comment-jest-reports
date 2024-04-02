@@ -56,7 +56,7 @@ const createSummary = async () => {
     appendResultStr(
       '============================= An issue was encountered! =================================',
     );
-    appendResultStr(error);
+    appendResultStr(JSON.stringify(error));
   }
 };
 
