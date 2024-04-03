@@ -1,4 +1,5 @@
 const { readFile } = require('fs/promises');
+const { ALARM, CHECK_MARK } = require('./constants');
 const fs = require('fs');
 
 const outputFile = process.env.INPUT_OUTPUTFILE;
@@ -49,4 +50,64 @@ exports.reportLowCoverage = (coverage, coverage_pct) => {
       }
     }
   }
+};
+
+exports.capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+exports.cleanCoverageString = (covStr) => {
+  const replaceStrings = [
+    'lines',
+    'statements',
+    'functions',
+    'branches',
+    'branchesTrue',
+  ];
+  const cleanStr = covStr
+    .replaceAll('":', ':')
+    .replaceAll('"', '>> ')
+    .replaceAll('{', ' ')
+    .replaceAll('},', '')
+    .replaceAll('}', '')
+    .replaceAll('    ', '  ')
+    .replaceAll('pct', 'percent');
+
+  let finalStr = cleanStr;
+  replaceStrings.forEach((str) => {
+    finalStr = finalStr.replace(
+      str,
+      `### ${exports.capitalizeFirstLetter(str)}`,
+    );
+  });
+
+  return finalStr.replaceAll('>> #', '#');
+};
+
+exports.transposeTotals = (total) => {
+  const rowKeys = Object.keys(total);
+  const colKeys = Object.keys(total[rowKeys[0]]);
+  const formattedColKeys = colKeys.map((key, index) => {
+    return `| ${[key]} ${index === colKeys.length - 1 ? '|' : ' '}`;
+  });
+  formattedColKeys.unshift('| ');
+
+  const rows = [];
+  rowKeys.forEach((header) => {
+    const rowArr = colKeys.map((key, index) => {
+      let specChar = null;
+      if (key === 'pct') {
+        specChar = parseInt(total[header][key]) < 100 ? ALARM : CHECK_MARK;
+      }
+      return `| ${specChar ?? ''}${total[header][key]} ${index === colKeys.length - 1 ? '|' : ' '}`;
+    });
+    rowArr.unshift(`| ${exports.capitalizeFirstLetter(header)} `);
+    rows.push(rowArr);
+  });
+
+  exports.appendResultStr(formattedColKeys.join(''));
+  exports.appendResultStr('| --- | --- | --- | --- | --- |');
+  rows.forEach((row) => {
+    exports.appendResultStr(row.join(''));
+  });
 };

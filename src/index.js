@@ -4,11 +4,11 @@ const {
   readJsonFile,
   appendResultStr,
   reportFailures,
-  reportLowCoverage,
+  transposeTotals,
 } = require('./helpers');
 
-const coverageDir = process.env.INPUT_COVERAGEDIR;
-const coverage_pct = process.env.INPUT_COVERAGEPCT;
+const coverageDir = process.env.INPUT_COVERAGEDIR ?? './src';
+const coverage_pct = process.env.INPUT_COVERAGEPCT ?? 100;
 
 const createSummary = async () => {
   try {
@@ -23,20 +23,16 @@ const createSummary = async () => {
     const coverage = await readJsonFile('./coverage-summary.json');
 
     if (results.numFailedTests === 0 && results.numFailedTestSuites === 0) {
-      appendResultStr(
-        '=============================== All tests passed! =======================================',
-      );
+      appendResultStr('## All tests passed!');
     } else {
-      appendResultStr(
-        '=============================== Not all tests passed! ===================================',
-      );
+      appendResultStr('## Not all tests passed!');
       appendResultStr(
         `* Only ${results.numPassedTests}/${results.numTotalTests} tests passed.`,
       );
       appendResultStr('* The following issues were found:');
       reportFailures(results.testResults);
     }
-    const { total, ...fnCoverages } = coverage;
+    const { total } = coverage;
     const { lines, statements, functions, branches } = total;
     if (
       lines.pct < coverage_pct ||
@@ -44,17 +40,12 @@ const createSummary = async () => {
       functions.pct < coverage_pct ||
       branches.pct < coverage_pct
     ) {
-      appendResultStr(
-        '============================== Insufficient Coverage! ===================================',
-      );
-      appendResultStr(`* Total coverage must meet at least ${coverage_pct}%`);
-      appendResultStr(JSON.stringify(total, null, 2));
-      reportLowCoverage(fnCoverages);
+      appendResultStr('## Insufficient Coverage!');
+      appendResultStr(`* Total coverage must meet at least ${coverage_pct}%\n`);
+      transposeTotals(total);
     }
   } catch (error) {
-    appendResultStr(
-      '============================= An issue was encountered! =================================',
-    );
+    appendResultStr('## An issue was encountered!');
 
     if (error.errno === -2) {
       appendResultStr(`Could not find any tests!`);
