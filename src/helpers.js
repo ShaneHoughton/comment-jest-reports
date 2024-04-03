@@ -2,7 +2,7 @@ const { readFile } = require('fs/promises');
 const { ALARM, CHECK_MARK } = require('./constants');
 const fs = require('fs');
 
-const outputFile = process.env.INPUT_OUTPUTFILE;
+const outputFile = process.env.INPUT_OUTPUTFILE ?? 'output.txt';
 
 exports.readJsonFile = async (filename) => {
   const file = await readFile(filename, 'utf-8');
@@ -21,7 +21,6 @@ exports.appendResultStr = async (data, newline = true) => {
       console.error('Error appending to file:', err);
       return;
     }
-    console.log('Data has been appended to file.');
   });
 };
 

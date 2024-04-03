@@ -15,7 +15,7 @@ const createSummary = async () => {
   try {
     try {
       await exec(
-        `npm run test -- --coverage --branchesTrue=false --json --outputFile=./test-results.json --collectCoverageFrom=${coverageDir}/**/*.js --coverageReporters=json-summary --coverageDirectory=./`,
+        `npm run test -- --coverage --json --outputFile=./test-results.json --collectCoverageFrom=${coverageDir}/**/*.js --coverageReporters=json-summary --coverageDirectory=./`,
       );
     } catch (error) {
       console.log(error);
