@@ -56,36 +56,8 @@ exports.capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-exports.cleanCoverageString = (covStr) => {
-  const replaceStrings = [
-    'lines',
-    'statements',
-    'functions',
-    'branches',
-    'branchesTrue',
-  ];
-  const cleanStr = covStr
-    .replaceAll('":', ':')
-    .replaceAll('"', '>> ')
-    .replaceAll('{', ' ')
-    .replaceAll('},', '')
-    .replaceAll('}', '')
-    .replaceAll('    ', '  ')
-    .replaceAll('pct', 'percent');
-
-  let finalStr = cleanStr;
-  replaceStrings.forEach((str) => {
-    finalStr = finalStr.replace(
-      str,
-      `### ${exports.capitalizeFirstLetter(str)}`,
-    );
-  });
-
-  return finalStr.replaceAll('>> #', '#');
-};
-
 exports.transposeTotals = (total) => {
-  const rowKeys = Object.keys(total);
+  const rowKeys = Object.keys(total).filter((key) => key !== 'branchesTrue'); // do not want to include branchesTrue
   const colKeys = Object.keys(total[rowKeys[0]]);
   const formattedColKeys = colKeys.map((key, index) => {
     return `| ${[key]} ${index === colKeys.length - 1 ? '|' : ' '}`;
