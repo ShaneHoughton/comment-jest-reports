@@ -6,6 +6,7 @@ const {
   reportFailures,
   transposeTotals,
 } = require('./helpers');
+const { ALARM, CHECK_MARK } = require('./constants');
 
 const coverageDir = process.env.INPUT_COVERAGEDIR ?? './src';
 const coverage_pct = process.env.INPUT_COVERAGEPCT ?? 100;
@@ -23,9 +24,9 @@ const createSummary = async () => {
     const coverage = await readJsonFile('./coverage-summary.json');
 
     if (results.numFailedTests === 0 && results.numFailedTestSuites === 0) {
-      appendResultStr('## All tests passed!');
+      appendResultStr(`## All tests passed!${CHECK_MARK}`);
     } else {
-      appendResultStr('## Not all tests passed!');
+      appendResultStr(`## Not all tests passed!${ALARM}`);
       appendResultStr(
         `* Only ${results.numPassedTests}/${results.numTotalTests} tests passed.`,
       );
@@ -40,7 +41,7 @@ const createSummary = async () => {
       functions.pct < coverage_pct ||
       branches.pct < coverage_pct
     ) {
-      appendResultStr('## Insufficient Coverage!');
+      appendResultStr(`## Insufficient Coverage!${ALARM}`);
       appendResultStr(`* Total coverage must meet at least ${coverage_pct}%\n`);
       transposeTotals(total);
     }
