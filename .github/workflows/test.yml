@@ -28,7 +28,7 @@ jobs:
       - name: generate Jest reports
         uses: ./
         with:
-          coveragedir: './src'
+          coveragedir: './src/classes'
           coveragepct: 100
           outputfile: 'output.txt'
 

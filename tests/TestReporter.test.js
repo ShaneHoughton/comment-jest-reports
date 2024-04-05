@@ -1,4 +1,4 @@
-const TestReporter = require('../src/TestReporter');
+const TestReporter = require('../src/classes/TestReporter');
 
 describe('Test TestReporter methods', () => {
   test('TR is initialized', () => {
