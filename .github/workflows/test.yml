@@ -26,7 +26,7 @@ jobs:
       - run: npm install
 
       - name: generate Jest reports
-        uses: ./
+        uses: ShaneHoughton/generate-jest-reports@main
         with:
           coveragedir: './src/classes'
           coveragepct: 100
@@ -37,4 +37,4 @@ jobs:
         if: always()
         with:
           message-path: |
-            ./test.txt
+            ./output.txt
