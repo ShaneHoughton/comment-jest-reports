@@ -37,4 +37,4 @@ jobs:
         if: always()
         with:
           message-path: |
-            ./output.txt
+            ./test.txt
