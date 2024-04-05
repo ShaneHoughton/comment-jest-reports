@@ -25,8 +25,16 @@ jobs:
           node-version: 16
       - run: npm install
 
-      - uses: ./
+      - name: generate Jest reports
+        uses: ./
         with:
           coveragedir: './src/TestReporter.js'
           coveragepct: 100
           outputfile: 'output.txt'
+
+      - name: Comment on coverage
+        uses: mshick/add-pr-comment@v2
+        if: always()
+        with:
+          message-path: |
+            ./output.txt
