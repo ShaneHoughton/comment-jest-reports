@@ -1,8 +1,8 @@
 const { readFile } = require('fs/promises');
-const { ALARM, CHECK_MARK } = require('./constants');
+const { ALARM, CHECK_MARK, DEFULT_FILENAME } = require('./constants');
 const fs = require('fs');
 
-const outputFile = process.env.INPUT_OUTPUTFILE ?? 'output.txt';
+const outputFile = process.env.INPUT_OUTPUTFILE ?? DEFULT_FILENAME;
 
 exports.readJsonFile = async (filename) => {
   const file = await readFile(filename, 'utf-8');
@@ -22,6 +22,27 @@ exports.appendResultStr = async (data, newline = true) => {
       return;
     }
   });
+};
+
+exports.writeToOutputFile = (_fileName = outputFile) => {
+  // name change?
+  const fileName = _fileName;
+  const appendResult = (data, newline = true) => {
+    const cleanedData = data
+      // eslint-disable-next-line no-control-regex
+      .replace(/\x1B\[[0-9;]*[JKmsu]/g, '')
+      .replace(/\s(>)\s*/g, '   ');
+    let dataToAppend = cleanedData;
+    if (newline) dataToAppend += '\n';
+    fs.appendFileSync(fileName, dataToAppend, (err) => {
+      if (err) {
+        console.error('Error appending to file:', err);
+        return;
+      }
+    });
+  };
+
+  return appendResult;
 };
 
 exports.reportFailures = (testResults) => {
