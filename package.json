@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:results": "npm run test -- --json --outputFile=./test-results.json"
+    "test:sys": "jest ./tests/TestReporter.test.js"
   },
   "keywords": [],
   "author": "",
