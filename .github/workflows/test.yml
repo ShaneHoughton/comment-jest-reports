@@ -28,13 +28,14 @@ jobs:
       - name: generate Jest reports
         uses: ShaneHoughton/generate-jest-reports@main
         with:
-          coveragedir: './src/classes'
+          coveragedir: './src/functions/**.js'
           coveragepct: 100
-          outputfile: 'output.txt'
+          outputfile: 'output.md'
+          branchestrue: false
 
       - name: Comment on coverage
         uses: mshick/add-pr-comment@v2
         if: always()
         with:
           message-path: |
-            ./output.txt
+            ./output.md
