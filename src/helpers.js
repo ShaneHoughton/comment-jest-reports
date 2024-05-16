@@ -103,3 +103,12 @@ exports.transposeTotals = (total) => {
     exports.appendResultStr(row.join(''));
   });
 };
+
+exports.deleteFile = (filePath) => {
+  try {
+    fs.unlinkSync(filePath);
+    console.log('File deleted successfully:', filePath);
+  } catch (err) {
+    console.error('Error deleting file:', err);
+  }
+};
