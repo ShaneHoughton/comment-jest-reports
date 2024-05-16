@@ -116,8 +116,10 @@ class TestReporter {
     // `npx jest --collectCoverageFrom=${coverageDir}/**/*.js --coverage --json --outputFile=./test-results.json --coverageReporters=json-summary --coverageDirectory=./`,
     try {
       const result = execSync(cmd);
+      console.log('executing!');
       return result.toString();
     } catch (error) {
+      console.log('did not work!');
       console.error(
         'Error:',
         error.stderr ? error.stderr.toString() : error.toString(),

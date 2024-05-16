@@ -5,3 +5,4 @@ node_modules
 coverage-summary.json
 test-results.json
 output.txt
+output.md
