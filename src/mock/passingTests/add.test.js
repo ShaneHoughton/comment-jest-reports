@@ -1,4 +1,4 @@
-const { addNumbers } = require('../add');
+const { addNumbers } = require('../functions/add');
 
 describe('Test mock function', () => {
   test('Add two numbers', () => {

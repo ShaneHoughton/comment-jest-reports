@@ -1,7 +1,6 @@
 const fs = require('fs');
 const TestReporter = require('../src/classes/TestReporter');
 const mockTestCoverage = require('../src/mock/mock-coverage.json');
-const mockTestResults = require('../src/mock/mock-test-results.json');
 const mockFailedTestResults = require('../src/mock/mock-failed-test-results.json');
 
 const deleteFile = (filePath) => {
@@ -28,6 +27,8 @@ describe('Test TestReporter methods', () => {
   afterEach(() => {
     deleteFiles();
   });
+
+  const mockTableHeaders = ['total', 'covered', 'skipped', 'pct'];
 
   test('TR is initialized', () => {
     const sut = TestReporter;
@@ -87,12 +88,11 @@ describe('Test TestReporter methods', () => {
     const sut = TestReporter;
     const expectedFile = 'output.md';
     const SUT = new sut(expectedFile, './src/mock/passingTests/add.test.js');
-    const mockTableHeaders = ['total', 'covered', 'skipped', 'pct'];
     const expectedFileContent = fs.readFileSync(
       `./src/mock/mockOutput.md`,
       'utf-8',
     );
-    SUT.createReports();
+    SUT.runCmd();
     SUT.addCoverageTable(mockTableHeaders, mockTestCoverage);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const generatedFileExists = fs.existsSync(`./${expectedFile}`);
@@ -109,12 +109,11 @@ describe('Test TestReporter methods', () => {
       expectedFile,
       './src/mock/failingTests/addFails.test.js',
     );
-    const mockTableHeaders = ['total', 'covered', 'skipped', 'pct'];
     const expecteFileContent = fs.readFileSync(
       `./src/mock/mockFailOutput.md`,
       'utf-8',
     );
-    SUT.createReports();
+    SUT.runCmd();
     SUT.addFailedTests(mockFailedTestResults);
     SUT.addCoverageTable(mockTableHeaders, mockTestCoverage);
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -129,12 +128,11 @@ describe('Test TestReporter methods', () => {
     const sut = TestReporter;
     const expectedFile = 'output.md';
     const SUT = new sut(expectedFile, './src/mock/failingTests/**.js');
-    const mockTableHeaders = ['total', 'covered', 'skipped', 'pct'];
     const expecteFileContent = fs.readFileSync(
       `./src/mock/mockFailOutput.md`,
       'utf-8',
     );
-    SUT.createReports();
+    SUT.runCmd();
     SUT.addFailedTests(mockFailedTestResults);
     SUT.addCoverageTable(mockTableHeaders, mockTestCoverage);
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -145,23 +143,37 @@ describe('Test TestReporter methods', () => {
     expect(actualFileContent).toBe(expecteFileContent);
   });
 
-  test('TR indicates tests passed', async () => {
+  test('TR createReport method creates files and report md', async () => {
     const sut = TestReporter;
     const expectedFile = 'output.md';
-    const SUT = new sut(expectedFile, './src/mock/passingTests/add.test.js');
-    const mockTableHeaders = ['total', 'covered', 'skipped', 'pct'];
-    const expecteFileContent = fs.readFileSync(
-      `./src/mock/mockOutput.md`,
+    const SUT = new sut(expectedFile, './src/mock/functions/**.js', 0);
+    const expectedFileContent = fs.readFileSync(
+      `./src/mock/mockOutput2.md`,
       'utf-8',
     );
     SUT.createReports();
-    SUT.addFailedTests(mockTestResults);
-    SUT.addCoverageTable(mockTableHeaders, mockTestCoverage);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const generatedFileExists = fs.existsSync(`./${expectedFile}`);
     const actualFileContent = fs.readFileSync(`./${expectedFile}`, 'utf-8');
 
     expect(generatedFileExists).toBe(true);
-    expect(actualFileContent).toBe(expecteFileContent);
+    expect(actualFileContent).toContain(expectedFileContent);
+  });
+
+  test('TR createReport method creates files and report md with branches true', async () => {
+    const sut = TestReporter;
+    const expectedFile = 'output.md';
+    const SUT = new sut(expectedFile, './src/mock/functions/**.js', 0, true);
+    const expectedFileContent = fs.readFileSync(
+      `./src/mock/mockOutput3.md`,
+      'utf-8',
+    );
+    SUT.createReports();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const generatedFileExists = fs.existsSync(`./${expectedFile}`);
+    const actualFileContent = fs.readFileSync(`./${expectedFile}`, 'utf-8');
+
+    expect(generatedFileExists).toBe(true);
+    expect(actualFileContent).toContain(expectedFileContent);
   });
 });

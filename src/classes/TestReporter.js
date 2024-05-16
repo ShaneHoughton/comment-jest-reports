@@ -3,8 +3,14 @@ const { execSync } = require('child_process');
 const { ALARM, CHECK_MARK } = require('../constants');
 
 class TestReporter {
-  constructor(outputFile, coverageDir = './src', branchesTrue = false) {
+  constructor(
+    outputFile = 'output.md',
+    coverageDir = './src',
+    coverage_percent = 80,
+    branchesTrue = false,
+  ) {
     this._outputFile = outputFile;
+    this._coverage_percent = coverage_percent;
     this._defaultCoverageDir = coverageDir;
     this._branchesTrue = branchesTrue;
   }
@@ -17,6 +23,14 @@ class TestReporter {
   set outputFile(newName) {
     // You can add validation logic here
     this._outputFile = newName;
+  }
+
+  get coverage_percent() {
+    return this._coverage_percent;
+  }
+
+  set coverage_percent(percentage) {
+    this._coverage_percent = percentage;
   }
 
   get defaultCoverageDir() {
@@ -59,7 +73,9 @@ class TestReporter {
       headers.forEach((header) => {
         if (header === 'pct') {
           const pct = data[header];
-          itemData.push(`${pct < 100 ? ALARM : CHECK_MARK}${pct}`);
+          itemData.push(
+            `${pct < this._coverage_percent ? ALARM : CHECK_MARK}${pct}`,
+          );
           return;
         }
         itemData.push(data[header]);
@@ -109,9 +125,30 @@ class TestReporter {
     }
   }
 
+  readJSON(filePath) {
+    try {
+      const data = fs.readFileSync(filePath, 'utf8');
+      const jsonData = JSON.parse(data);
+
+      return jsonData;
+    } catch (err) {
+      console.error('Error reading or parsing the file', err);
+      return null;
+    }
+  }
+
   createReports() {
     // generate json files
     this.runCmd();
+    const testResults = this.readJSON('./test-results.json');
+    const coverageReport = this.readJSON('./coverage-summary.json');
+    if (testResults && coverageReport) {
+      this.addFailedTests(testResults);
+      this.addCoverageTable(
+        ['total', 'covered', 'skipped', 'pct'],
+        coverageReport,
+      );
+    }
   }
 }
 module.exports = TestReporter;
