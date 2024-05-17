@@ -5,7 +5,7 @@ const { ALARM, CHECK_MARK } = require('../constants');
 class TestReporter {
   constructor(
     outputFile = 'output.md',
-    coverageDir = './src',
+    coverageDir = './*/**.js',
     coverage_percent = 80,
     branchesTrue = false,
   ) {
@@ -62,8 +62,8 @@ class TestReporter {
       'branches',
       'branchesTrue',
     ];
-    coverageItems.pop();
-    // if (!this._branchesTrue) coverageItems.pop();
+    //coverageItems.pop();
+    if (!this._branchesTrue) coverageItems.pop();
     const rows = [];
     rows.push(`||${headers.join('|')}|\n`);
     rows.push(`|${'-|'.repeat(headers.length + 1)}\n`);
