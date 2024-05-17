@@ -43,12 +43,12 @@ class TestReporter {
 
   // Methods
   writeFile(content) {
-    content.replace(
+    const updatedContent = content.replace(
       // eslint-disable-next-line no-control-regex
       /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
       '',
     );
-    fs.appendFileSync(this._outputFile, content, (err) => {
+    fs.appendFileSync(this._outputFile, updatedContent, (err) => {
       if (err) {
         console.error('Error appending to file:', err);
         return;
