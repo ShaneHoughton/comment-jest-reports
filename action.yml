@@ -8,7 +8,7 @@ inputs:
   coveragedir:
     description: 'path to the covered files'
     required: true
-    default: './**.js'
+    default: './*/**.js'
   coveragepct:
     description: 'required coverage percent for code'
     required: true
