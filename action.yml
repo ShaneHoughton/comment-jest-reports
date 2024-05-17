@@ -1,18 +1,22 @@
 name: houghtons comment jest results
 description: comments on PR with jest results and coverage
 inputs:
-  coveragedir:
-    description: 'path to the covered files'
-    required: true
-    default: './src'
-  coveragepct:
-    description: 'required coverage percent for code'
-    required: true
-    default: 100
   outputfile:
     description: 'name of the output txt file with report'
     required: false
-    default: 'output.txt'
+    default: 'output.md'
+  coveragedir:
+    description: 'path to the covered files'
+    required: true
+    default: './**.js'
+  coveragepct:
+    description: 'required coverage percent for code'
+    required: true
+    default: 80
+  branchestrue:
+    description: 'if Jest branchesTrue should be in output'
+    required: false
+    default: false
 
 runs:
   using: 'node16'
