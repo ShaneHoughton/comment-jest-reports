@@ -100,8 +100,6 @@ class TestReporter {
     testResults.forEach((result) => {
       this.writeFile(result.message);
     });
-    // console.log(testResults);
-    // return '';
   }
 
   runCmd() {
@@ -119,7 +117,6 @@ class TestReporter {
       console.log('executing!');
       return result.toString();
     } catch (error) {
-      console.log('did not work!');
       console.error(
         'Error:',
         error.stderr ? error.stderr.toString() : error.toString(),
