@@ -62,7 +62,8 @@ class TestReporter {
       'branches',
       'branchesTrue',
     ];
-    if (!this._branchesTrue) coverageItems.pop();
+    coverageItems.pop();
+    // if (!this._branchesTrue) coverageItems.pop();
     const rows = [];
     rows.push(`||${headers.join('|')}|\n`);
     rows.push(`|${'-|'.repeat(headers.length + 1)}\n`);
